@@ -1,0 +1,34 @@
+.wrapper {
+    @apply flex items-center justify-between gap-3;
+
+    .todoItem {
+        @apply grow min-h-[44px] max-w-full flex items-center justify-between bg-white outline-sky-500 hover:outline rounded-md px-3 border border-[gray];
+        .completed {
+            @apply flex justify-center items-center h-full;
+            input[type="checkbox"] {
+                @apply relative shadow-none appearance-none p-0 w-5 h-5 border border-sky-800 rounded-[4px] bg-white;
+                &:checked {
+                    @apply border-sky-800 bg-sky-600;
+                    &::after {
+                        @apply w-4 h-4 absolute top-1/2 left-1/2 right-0 bottom-0 -translate-x-1/2 -translate-y-1/2;
+                        content: '';
+                        background: url('./_assets/Check.svg') no-repeat center center;
+                        background-size: contain;
+                    }
+                }
+            }
+        }
+        .text {
+            @apply mr-auto ml-2 p-1;
+        }
+        .edit {
+            @apply p-2 cursor-pointer hover:opacity-50;
+        }
+        .important {
+            @apply text-[25px] p-2 ml-3 cursor-pointer;
+        }
+    }
+    .delete {
+        @apply text-[22px] hover:text-red-500 cursor-pointer;
+    }
+}
