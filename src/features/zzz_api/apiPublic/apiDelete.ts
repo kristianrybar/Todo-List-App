@@ -16,8 +16,11 @@ export async function apiDelete(url: string) {
     
     try {
         let r = await fetch(fullUrl, options)
-        if (!r.ok) 
+        
+        
+        if (!r.ok) {
             return {error: 'didnt respond with json, something is very broken'}
+        }
         
         let json = await r.json()
 

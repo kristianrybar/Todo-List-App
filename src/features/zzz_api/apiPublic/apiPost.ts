@@ -1,6 +1,6 @@
 import { getApiHost } from '../host/getApiHost'
 
-export async function apiPost(url: string) {
+export async function apiPost(url: string, body: any) {
     const host = getApiHost()
     if (!host) 
         return {error: 'Host not provided'}
@@ -9,6 +9,9 @@ export async function apiPost(url: string) {
 
     const options = {
         method: 'POST',
+        body: new URLSearchParams({
+            ...body
+        }),
     }
 
     try {

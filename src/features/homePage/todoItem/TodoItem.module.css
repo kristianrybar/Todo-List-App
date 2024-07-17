@@ -29,6 +29,6 @@
         }
     }
     .delete {
-        @apply text-[22px] hover:text-red-500 cursor-pointer;
+        @apply self-stretch min-w-[44px] flex items-center justify-center text-[20px] text-white bg-red-400 hover:bg-red-500 cursor-pointer rounded-md;
     }
 }

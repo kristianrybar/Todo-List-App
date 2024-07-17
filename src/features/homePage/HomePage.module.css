@@ -5,9 +5,10 @@
         }
     
         .todosBox {
-            @apply relative max-w-[800px] mx-auto max-h-[100%] sm:max-h-[700px] bg-sky-100 rounded-lg border border-[gray] overflow-x-auto;
+            @apply relative min-h-[600px] max-w-[800px] mx-auto max-h-[100%] sm:max-h-[700px] bg-sky-100 rounded-lg border border-[gray] overflow-x-auto;
             .header {
-                @apply fixed sm:sticky bottom-0 sm:bottom-[unset] sm:top-0 left-0 right-0 px-4 bg-sky-200 sm:bg-sky-100 py-4 border-t sm:border-b border-[gray] z-[1] sm:rounded-t-lg;
+                @apply fixed sm:sticky bottom-0 sm:bottom-[unset] sm:top-0 left-0 right-0 px-4 bg-sky-200 sm:bg-sky-100 py-4 
+                    border-t sm:border-b border-[gray] z-[1] sm:rounded-t-lg;
                 h1 {
                     @apply hidden sm:block text-[24px] text-center font-semibold;
                 }
@@ -20,11 +21,18 @@
                     }
                     .addButton {
                         @apply h-full px-4 flex items-center ml-3 bg-sky-500 hover:bg-sky-600 text-white rounded-lg cursor-pointer font-semibold;
+                        &.disabled {
+                            @apply pointer-events-none opacity-50;
+                        }
                     }
                 }
             }
             .todosList {
-                @apply flex flex-col gap-3 sm:pt-4 pt-10 pb-20 sm:pb-4 border-b p-4;
+                @apply flex flex-col gap-3 sm:pt-4 pt-10 pb-20 sm:pb-4 p-4;
+
+                .noTodosText {
+                    @apply font-semibold text-center;
+                }
             }
         }
     

@@ -9,6 +9,8 @@ export const PUT_todos = async (p: Params) => {
     const r = await api.put(`/todos/${p.todo_id}`, p.text) 
     if (!r || r.error) {
         const error = r.error ? r.error : 'unexpected error'
+        console.warn(error)
+        // alert(error) // for mobiles
         return {error: error}
     }
 

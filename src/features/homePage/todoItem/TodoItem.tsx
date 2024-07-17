@@ -10,6 +10,7 @@ import css from './TodoItem.module.css'
 
 type Props = {
     todo: TTodo
+    onDelete: () => void
 }
 
 const TodoItem = (props: Props) => {
@@ -34,8 +35,11 @@ const TodoItem = (props: Props) => {
                     <MdOutlineStarOutline />
                 </div>
             </div>
-            <div className={css.delete}>
-                <RxCross2 />
+            <div 
+                className={css.delete}
+                onClick={props.onDelete}
+            >
+                <FaRegTrashCan />
             </div>
         </div>
     )
