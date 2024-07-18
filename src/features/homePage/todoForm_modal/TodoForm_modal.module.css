@@ -4,13 +4,12 @@
     background: rgba(52, 64, 84, 0.70);
 
     .modal_container {
-        @apply absolute top-0 left-0 right-0 bottom-0 m-auto max-w-[450px] h-max
-            rounded-2xl flex flex-col justify-between overflow-hidden bg-sky-100 p-4;
+        @apply absolute top-0 left-0 right-0 bottom-0 mx-4 my-auto sm:m-auto max-w-[450px] h-max
+            rounded-2xl flex flex-col justify-between overflow-hidden bg-sky-100 p-4 ;
         box-shadow: 0px 20px 24px -4px rgba(16, 24, 40, 0.08), 0px 8px 8px -4px rgba(16, 24, 40, 0.03);
         h3 {
             @apply text-center text-lg mb-4 font-medium text-[--text-basic];
         }
-
         .cancelButton {
             @apply px-4 h-[40px] mt-8 flex items-center w-max ml-auto bg-red-400 hover:bg-red-500 text-white rounded-lg cursor-pointer font-semibold;
         }

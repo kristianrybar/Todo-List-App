@@ -1,8 +1,6 @@
 import { TTodo } from '../_t/TTodo'
-import { FaRegTrashCan, FaPenClip } from "react-icons/fa6"
-import { MdOutlineStarPurple500, MdOutlineStarOutline } from "react-icons/md"
-import { isTodoCompleted } from './_utils/isTodoCompleted'
-import { isTodoImportant } from './_utils/isTodoImportant'
+import { FaRegTrashCan, FaPenClip } from 'react-icons/fa6'
+import { MdOutlineStarPurple500, MdOutlineStarOutline } from 'react-icons/md'
 
 import css from './TodoItem.module.css'
 
@@ -21,7 +19,7 @@ const TodoItem = (props: Props) => {
                 <div className={css.checkbox}>
                     <input 
                         type='checkbox'
-                        checked={props.todo.completed} // primarne 'props.todo.completed' je boolean ale z api chodi response ako string
+                        checked={props.todo.completed}
 
                         onChange={(e) => props.onChangeCheckbox(e)}
                     />

@@ -3,7 +3,7 @@ import css from './TodoForm.module.css'
 type Props = {
     onSubmit: (e) => void
     onChangeText: (e) => void
-    todoText: string
+    text: string
     onClickButton: () => void
     btnTitle: string
 }
@@ -17,7 +17,7 @@ const TodoForm = (props: Props) => {
             <input
                 type='text'
                 placeholder='Enter text here...'
-                value={props.todoText || ''}
+                value={props.text || ''}
                 onChange={e => props.onChangeText(e)}
 
             />
@@ -25,7 +25,7 @@ const TodoForm = (props: Props) => {
                 type='button'
                 className={`
             ${css.addButton}
-            ${!props.todoText && css.disabled}
+            ${!props.text && css.disabled}
         `}
                 onClick={props.onClickButton}
             >

@@ -5,9 +5,7 @@ type Params = {
     completed: boolean
 }
 
-export const PUT_todos__updateCompleted = async (p: Params) => {
-    console.log(p);
-    
+export const PUT_todos__updateCompleted = async (p: Params) => {    
     const r = await api.put(`/todos/${p.todo_id}`, {
         completed: p.completed,
     })

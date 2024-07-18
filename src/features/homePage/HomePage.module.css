@@ -1,7 +1,7 @@
 .homePageContainer {
     @apply w-full grow max-w-[1280px] mx-auto relative bg-gray-50 sm:p-4;
         .mobileTitle {
-            @apply sm:hidden fixed top-0 left-0 right-0 bg-sky-200 border-b border-[gray] text-[18px] text-[--text-basic] text-center font-semibold mb-2 py-1 z-[1];
+            @apply sm:hidden fixed top-0 left-0 right-0 bg-sky-200 border-b border-[gray] text-[18px] text-[--text-basic] text-center font-semibold mb-2 pt-1 pb-0.5 z-[1];
         }
         .todosBox {
             @apply flex flex-col relative min-h-[100dvh] sm:min-h-[700px] max-w-[800px] mx-auto sm:mt-16 max-h-[100%] sm:max-h-[700px] bg-sky-100 rounded-lg border border-[gray];
@@ -17,7 +17,7 @@
                 @apply relative flex flex-col grow;
                 .scroll {
                     @apply absolute top-0 bottom-0 right-0 left-0 overflow-y-auto
-                        flex flex-col gap-3 sm:pt-4 pt-12 pb-32 sm:pb-4 p-4;
+                        flex flex-col gap-3 sm:pt-4 pt-12 pb-[180px] sm:pb-4 p-4;
                     &::-webkit-scrollbar {
                         width: 8px;
                         background-color: transparent;

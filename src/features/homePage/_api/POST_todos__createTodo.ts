@@ -6,7 +6,7 @@ type Params = {
 
 export const POST_todos__createTodo = async (p: Params) => {
     const r = await api.post('/todos', {
-        text: p.text
+        text: p.text,
     }) 
     if (!r || r.error) {
         const error = r.error ? r.error : 'unexpected error'

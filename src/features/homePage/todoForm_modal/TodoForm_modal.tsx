@@ -4,15 +4,13 @@ import css from './TodoForm_modal.module.css'
 type Props = {
     onSubmit: (e) => void
     onChangeText: (e) => void
-    todoText: string
+    text: string
     onClickButton: () => void
     btnTitle: string
     onCancel: () => void
 }
 
 const TodoForm_modal = (props: Props) => {
-    console.log(props.todoText);
-    
     return (
         <div className={css.backdrop}>
             <div className={css.modal_container}>
@@ -20,7 +18,7 @@ const TodoForm_modal = (props: Props) => {
                 <TodoForm
                     onSubmit={props.onSubmit}
                     onChangeText={props.onChangeText}
-                    todoText={props.todoText}
+                    text={props.text}
                     onClickButton={props.onClickButton}
                     btnTitle={props.btnTitle}
                 />
