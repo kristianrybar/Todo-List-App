@@ -1,13 +1,21 @@
 import { useEffect, useState } from 'react'
+
 import { TTodo } from './_t/TTodo'
+import { TTabEnums } from './_t/TTabEnums'
+
 import { GET_todos } from './_api/GET_todos'
 import { POST_todos__createTodo } from './_api/POST_todos__createTodo'
 import { DELETE_todos__deleteTodoById } from './_api/DELETE_todos__deleteTodoById'
 
+import { _convertStringToBoolean } from './_utils/_convertStringToBoolean'
+
 import useTodo_Updating from './_hooks/useTodo_Updating'
 
-import AddTodoForm from './addTodoForm/AddTodoForm'
+import LoadingCircle from '~/app_shared/loadingCircle/LoadingCircle'
 import TodoItem from './todoItem/TodoItem'
+import AddTodoForm from './addTodoForm/AddTodoForm'
+import Tabs from './tabs/Tabs'
+
 
 import css from './HomePage.module.css'
 
@@ -15,8 +23,8 @@ const HomePage = () => {
     const [todos, set_todos] = useState<TTodo[]>([])
 
     const [todoInfo, set_todoInfo] = useState({text: ''})
-    //const [loadingTodosStatus, set_loadingTodosStatus] = useState<'pending' | 'idle'>('idle')
-    //const [activeList, set_activeList] = useState<'all' | 'completed' | 'important'>('all')
+    const [loadingTodosStatus, set_loadingTodosStatus] = useState<'pending' | 'idle'>('idle')
+    const [activeTab, set_activeTab] = useState<TTabEnums>('all')
 
     const {updateTodoText_withPrompt, updateTodoCompleted, updateTodoImportant} = useTodo_Updating()
 
@@ -52,34 +60,50 @@ const HomePage = () => {
         })
     }
 
-    const convertStringToBoolean = (todos) => {
-        return todos.map(todo => {
-            return {
-                ...todo,
-                completed: (todo.completed == 'true' || todo.completed == true) ? true : false,
-                important: (todo.important == 'true' || todo.important == true) ? true : false,
-            }
-        })
-    }
 
-    const onChange = (e) => {
+
+    const filterTodos = async (tabName) => {
+        if (!todos.length) 
+            return
+
+        if (tabName == 'completed') {
+            const resp1= await loadTodos()
+            if (resp1.error) 
+                return
+            
+            set_todos(prev => prev.filter(todo => todo.completed == true))
+        }
+        if (tabName == 'important') {
+            const resp2 = await loadTodos()
+            if (resp2.error) 
+                return
+
+            set_todos(prev => prev.filter(todo => todo.important == true))
+        }
+        if (tabName == 'all') 
+            loadTodos()
+    }
+    
+    const onChangeText = (e) => {
         set_todoInfo(prev => ({...prev, text: e.target.value}))
     }
 
     const onSubmit = (e) => {
         e.preventDefault()
-
         createTodo() 
     }
 
     const loadTodos = async () => {
+        set_loadingTodosStatus('pending')
         const resp = await GET_todos()
         if (resp.error) 
-            return
+            return resp
         
-        const editedTodos = convertStringToBoolean(resp) // fix, lebo z api boolean tomu chodi ako string 
+        const editedTodos: TTodo[] = _convertStringToBoolean(resp) // fix, lebo z api boolean tomu chodi ako string 
         
         set_todos(editedTodos)
+        set_loadingTodosStatus('idle')
+        return resp
     }
 
     const createTodo = async () => {
@@ -134,10 +158,7 @@ const HomePage = () => {
 
     useEffect(() => {
         loadTodos()
-    }, [])
-    
-    console.log(todos);
-    
+    }, [])    
 
     return (
         <div className={css.homePageContainer}>
@@ -149,17 +170,23 @@ const HomePage = () => {
                     <h1>Todo List</h1>
                     <AddTodoForm
                         onSubmit={(e) => onSubmit(e)}
-                        onChange={(e) => onChange(e)}
+                        onChangeText={(e) => onChangeText(e)}
                         todoInfo={todoInfo}
                         onAdd={createTodo}
                     />
+
+                    <Tabs
+                        onChangeTab={(tabName) => {
+                            set_activeTab(tabName)
+                            filterTodos(tabName)
+                        }}
+                        activeTab={activeTab}
+                    />
                 </div>
                 <div className={css.todosList}>
-                    {todos.length 
-                        ? todos
-                            //.filter(todo => todo.completed == 'true' || todo.completed == true)
-                            //.filter(todo => todo.important == 'true' || todo.important == true)
-                            .map(todo => 
+                    <div className={css.scroll}>
+                        {(todos.length ? true : false) && loadingTodosStatus == 'idle' &&
+                            todos.map(todo => 
                                 <TodoItem
                                     key={todo.id}
                                     todo={todo}
@@ -167,14 +194,23 @@ const HomePage = () => {
                                     onEdit={() => doUpdateTodoText_withPrompt(todo.id, todo.text)}
                                     onChangeCheckbox={(e) => doUpdateTodoCompleted(todo.id, e.target.checked)}
                                     onClickImportantIcon={() => doUpdateTodoImportant(todo.id, todo.important ? false : true)}
-                                    //onClickImportantIcon={() => console.log(todo.important)}
                                 />
                             )
-                        : <div className={css.noTodosText}>
-                            No todos yet
-                        </div>
-                    }
+                        }
+                        {!todos.length && loadingTodosStatus == 'idle' && 
+                            <div className={css.noTodosText}>
+                                No todos yet
+                            </div>
+                        }
+                    </div>
                 </div>
+
+                {loadingTodosStatus == 'pending' &&
+                    <LoadingCircle
+                        size={7}
+                        loadingColor='#0284C7'
+                    />
+                }
             </div>
         </div>
     )

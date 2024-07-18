@@ -1,0 +1,11 @@
+.tabs {
+    @apply flex justify-between items-center gap-3 pt-4;
+    div {
+        @apply flex items-center justify-center w-full py-3 sm:py-2 font-bold border border-b-0 border-[gray] bg-sky-200 rounded-t-lg cursor-pointer
+            hover:bg-sky-300 opacity-50;
+        
+        &.active {
+            @apply bg-sky-300 opacity-100;
+        }
+    }
+}

@@ -2,7 +2,7 @@ import css from './AddTodoForm.module.css'
 
 type Props = {
     onSubmit: (e) => void
-    onChange: (e) => void
+    onChangeText: (e) => void
     todoInfo
     onAdd: () => void
 }
@@ -17,7 +17,7 @@ const AddTodoForm = (props: Props) => {
                 type='text'
                 placeholder='Enter text here...'
                 value={props.todoInfo.text || ''}
-                onChange={e => props.onChange(e)}
+                onChange={e => props.onChangeText(e)}
 
             />
             <button

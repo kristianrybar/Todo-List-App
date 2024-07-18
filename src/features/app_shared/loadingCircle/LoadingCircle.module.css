@@ -1,0 +1,23 @@
+.circle {
+    @apply flex justify-center items-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[50%] text-center leading-normal tracking-normal uppercase z-50 shadow-2xl;
+
+    .loader {
+      @apply min-w-full min-h-full w-full h-full rounded-[50%] -top-0 -left-0 absolute;
+      border: 0.25rem solid transparent;
+      border-top: 0.25rem solid #7E22CE;
+      border-right: 0.25rem solid #7E22CE;
+      animation:animateC 0.5s linear infinite;
+    }
+}
+
+@keyframes animateC
+{
+  0%
+  {
+    transform:rotate(0deg);
+  }
+  100%
+  {
+    transform:rotate(360deg);
+  }
+}

@@ -1,33 +1,35 @@
 .homePageContainer {
     @apply w-full grow max-w-[1280px] mx-auto relative bg-gray-50 px-0 sm:px-4 p-4;
         .mobileTitle {
-            @apply sm:hidden fixed top-0 left-0 right-0 bg-sky-200 border-b border-[gray] text-[24px] text-[--text-basic] text-center font-semibold mb-2 py-1 z-[1];
+            @apply sm:hidden fixed top-0 left-0 right-0 bg-sky-200 border-b border-[gray] text-[18px] text-[--text-basic] text-center font-semibold mb-2 py-1 z-[1];
         }
-    
         .todosBox {
-            @apply relative min-h-[600px] max-w-[800px] mx-auto max-h-[100%] sm:max-h-[700px] bg-sky-100 rounded-lg border border-[gray] overflow-x-auto;
-            &::-webkit-scrollbar {
-                width: 8px;
-                background-color: transparent;
-            }
-            &::-webkit-scrollbar-thumb {
-                border-radius: 10px;
-                background-color: #b6b6b6;
-            }
+            @apply flex flex-col relative min-h-[100dvh] sm:min-h-[600px] max-w-[800px] mx-auto max-h-[100%] sm:max-h-[700px] bg-sky-100 rounded-lg border border-[gray];
 
             .header {
-                @apply fixed sm:sticky bottom-0 sm:bottom-[unset] sm:top-0 left-0 right-0 px-4 bg-sky-200 sm:bg-sky-100 py-4 
-                    border-t sm:border-t-0 sm:border-b border-[gray] z-[1] sm:rounded-t-lg;
+                @apply fixed sm:sticky bottom-0 sm:bottom-[unset] sm:top-0 left-0 right-0 px-4 bg-sky-200 sm:bg-sky-100 pt-4 
+                    border-t sm:border-t-0 sm:border-b border-[gray] z-[1] sm:rounded-t-lg text-[--text-basic];
                 h1 {
-                    @apply hidden sm:block text-[21px] text-center text-[--text-basic] font-semibold;
+                    @apply hidden sm:block text-[21px] text-center font-semibold;
                 }
             }
-
             .todosList {
-                @apply flex flex-col gap-3 sm:pt-4 pt-10 pb-20 sm:pb-4 p-4;
+                @apply relative flex flex-col grow;
+                .scroll {
+                    @apply absolute top-0 bottom-0 right-0 left-0 overflow-y-auto
+                        flex flex-col gap-3 sm:pt-4 pt-9 pb-32 sm:pb-4 p-4;
+                    &::-webkit-scrollbar {
+                        width: 8px;
+                        background-color: transparent;
+                    }
+                    &::-webkit-scrollbar-thumb {
+                        border-radius: 10px;
+                        background-color: #b6b6b6;
+                    }
 
-                .noTodosText {
-                    @apply font-semibold text-center text-[--text-basic];
+                    .noTodosText {
+                        @apply font-semibold text-center text-[--text-basic];
+                    }
                 }
             }
         }

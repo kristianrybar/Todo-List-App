@@ -1,12 +1,12 @@
 .formAddText {
     @apply h-[44px] flex items-center justify-center sm:mt-3;
     input {
-        @apply h-full px-3 py-1 rounded-lg;
-        flex-basis: 380px;
+        @apply h-full px-3 py-1 rounded-lg outline-sky-600;
+        flex-basis: 400px;
         outline-offset: 2px;
     }
     .addButton {
-        @apply h-full px-4 flex items-center ml-3 bg-sky-500 hover:bg-sky-600 text-white rounded-lg cursor-pointer font-semibold;
+        @apply h-full px-4 flex items-center ml-3 bg-sky-400 hover:bg-sky-500 text-white rounded-lg cursor-pointer font-semibold;
         &.disabled {
             @apply pointer-events-none opacity-50;
         }
