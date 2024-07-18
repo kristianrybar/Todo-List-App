@@ -2,15 +2,15 @@
     @apply flex items-center justify-between gap-3;
 
     .todoItem {
-        @apply grow min-h-[44px] max-w-full flex items-center justify-between bg-white outline-sky-500 hover:outline rounded-md px-3 border border-[gray];
-        .completed {
+        @apply grow min-h-[44px] max-w-full flex items-center justify-between bg-white outline-sky-300 outline-offset-1 hover:outline hover:border-sky-800 rounded-md px-3 border border-[gray];
+        .checkbox {
             @apply flex justify-center items-center h-full;
             input[type="checkbox"] {
-                @apply relative shadow-none appearance-none p-0 w-5 h-5 border border-sky-800 rounded-[4px] bg-white;
+                @apply relative shadow-none appearance-none p-0 w-6 h-6 border border-sky-800 rounded-[4px] bg-white hover:bg-sky-100 cursor-pointer;
                 &:checked {
                     @apply border-sky-800 bg-sky-600;
                     &::after {
-                        @apply w-4 h-4 absolute top-1/2 left-1/2 right-0 bottom-0 -translate-x-1/2 -translate-y-1/2;
+                        @apply w-5 h-5 absolute top-1/2 left-1/2 right-0 bottom-0 -translate-x-1/2 -translate-y-1/2;
                         content: '';
                         background: url('./_assets/Check.svg') no-repeat center center;
                         background-size: contain;
@@ -19,16 +19,23 @@
             }
         }
         .text {
-            @apply mr-auto ml-2 p-1;
+            @apply text-sm sm:text-base text-[--text-basic] mr-auto ml-2 p-1;
+            &.completed {
+                @apply opacity-30 line-through;
+            }
         }
-        .edit {
-            @apply p-2 cursor-pointer hover:opacity-50;
+        .editIcon {
+            @apply p-2 px-3 cursor-pointer hover:opacity-50 text-[--text-basic];
         }
-        .important {
-            @apply text-[25px] p-2 ml-3 cursor-pointer;
+        .importantIcon {
+            @apply text-[25px] p-2 ml-3 cursor-pointer text-[--text-basic] hover:opacity-50;
+
+            .filled {
+                @apply text-[#F5BD02];
+            }
         }
     }
-    .delete {
+    .deleteIcon {
         @apply self-stretch min-w-[44px] flex items-center justify-center text-[20px] text-white bg-red-400 hover:bg-red-500 cursor-pointer rounded-md;
     }
 }

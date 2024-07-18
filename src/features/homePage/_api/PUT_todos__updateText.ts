@@ -1,11 +1,14 @@
 import { api } from '~/zzz_api/core/api'
 
 type Params = {
-    todo_id
+    todo_id: string
+    text: string
 }
 
-export const DELETE_todos = async (p: Params) => {
-    const r = await api.delete(`/todos/${p.todo_id}`)
+export const PUT_todos__updateText = async (p: Params) => {
+    const r = await api.put(`/todos/${p.todo_id}`, {
+        text: p.text,
+    })
     if (!r || r.error) {
         const error = r.error ? r.error : 'unexpected error'
         console.warn(error)

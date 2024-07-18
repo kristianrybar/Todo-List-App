@@ -1,6 +1,6 @@
 import { getApiHost } from '../host/getApiHost'
 
-export async function apiPost(url: string, body: any) {
+export async function apiPost(url: string, body) {
     const host = getApiHost()
     if (!host) 
         return {error: 'Host not provided'}
