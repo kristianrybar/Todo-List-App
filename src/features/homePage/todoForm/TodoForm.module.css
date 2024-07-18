@@ -1,5 +1,5 @@
 .formAddText {
-    @apply h-[44px] flex items-center justify-center sm:mt-3;
+    @apply h-[44px] flex items-center justify-center;
     input {
         @apply h-full px-3 py-1 rounded-lg outline-sky-600;
         flex-basis: 400px;

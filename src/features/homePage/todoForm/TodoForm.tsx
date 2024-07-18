@@ -1,13 +1,14 @@
-import css from './AddTodoForm.module.css' 
+import css from './TodoForm.module.css' 
 
 type Props = {
     onSubmit: (e) => void
     onChangeText: (e) => void
-    todoInfo
-    onAdd: () => void
+    todoText: string
+    onClickButton: () => void
+    btnTitle: string
 }
 
-const AddTodoForm = (props: Props) => {
+const TodoForm = (props: Props) => {
     return (
         <form
             className={css.formAddText}
@@ -16,7 +17,7 @@ const AddTodoForm = (props: Props) => {
             <input
                 type='text'
                 placeholder='Enter text here...'
-                value={props.todoInfo.text || ''}
+                value={props.todoText || ''}
                 onChange={e => props.onChangeText(e)}
 
             />
@@ -24,14 +25,14 @@ const AddTodoForm = (props: Props) => {
                 type='button'
                 className={`
             ${css.addButton}
-            ${!props.todoInfo.text && css.disabled}
+            ${!props.todoText && css.disabled}
         `}
-                onClick={props.onAdd}
+                onClick={props.onClickButton}
             >
-                ADD
+                {props.btnTitle || ''}
             </button>
         </form>
     )
 }
 
-export default AddTodoForm
+export default TodoForm

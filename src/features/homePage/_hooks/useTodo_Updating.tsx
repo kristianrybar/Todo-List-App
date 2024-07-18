@@ -5,17 +5,8 @@ import { PUT_todos__updateImportant } from '../_api/PUT_todos__updateImportant'
 
 const useTodo_Updating = () => {
 
-    const updateTodoText_withPrompt = async (todo_id, prevText) => {
-        const newText = prompt('Change text of your "todo".', prevText)
-        if (newText == prevText) 
-            return {error: 'Error: The same text as previous.'}
-        
-        if (!newText) {
-            const errorText = 'Error: No value entered. Please enter a value to proceed.'
-            alert(errorText)
-            return {error: errorText}
-        }
-        
+    const updateTodoText = async (todo_id, newText) => {
+
         const resp = await PUT_todos__updateText({
             todo_id: todo_id,
             text: newText,
@@ -49,7 +40,7 @@ const useTodo_Updating = () => {
     }
 
     return {
-        updateTodoText_withPrompt,
+        updateTodoText,
         updateTodoCompleted,
         updateTodoImportant,
     }

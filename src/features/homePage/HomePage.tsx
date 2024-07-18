@@ -11,9 +11,10 @@ import { _convertStringToBoolean } from './_utils/_convertStringToBoolean'
 
 import useTodo_Updating from './_hooks/useTodo_Updating'
 
+import TodoForm_modal from './todoForm_modal/TodoForm_modal'
 import LoadingCircle from '~/app_shared/loadingCircle/LoadingCircle'
 import TodoItem from './todoItem/TodoItem'
-import AddTodoForm from './addTodoForm/AddTodoForm'
+import TodoForm from './todoForm/TodoForm'
 import Tabs from './tabs/Tabs'
 
 
@@ -22,11 +23,14 @@ import css from './HomePage.module.css'
 const HomePage = () => {
     const [todos, set_todos] = useState<TTodo[]>([])
 
-    const [todoInfo, set_todoInfo] = useState({text: ''})
+    const [todoText, set_todoText] = useState({text: ''})
     const [loadingTodosStatus, set_loadingTodosStatus] = useState<'pending' | 'idle'>('idle')
     const [activeTab, set_activeTab] = useState<TTabEnums>('all')
+    const [isModalOpen, set_isModalOpen] = useState<boolean>(false)
+    const [lastTodoID, set_lastTodoID] = useState('') // nastavi sa po kliku na dit icon pre modal
 
-    const {updateTodoText_withPrompt, updateTodoCompleted, updateTodoImportant} = useTodo_Updating()
+
+    const {updateTodoText, updateTodoCompleted, updateTodoImportant} = useTodo_Updating()
 
     // FUNCTIONS
 
@@ -60,6 +64,9 @@ const HomePage = () => {
         })
     }
 
+    const clearTextInput = () => {
+        set_todoText(prev => ({...prev, text: ''}))
+    }
 
 
     const filterTodos = async (tabName) => {
@@ -85,12 +92,19 @@ const HomePage = () => {
     }
     
     const onChangeText = (e) => {
-        set_todoInfo(prev => ({...prev, text: e.target.value}))
+        set_todoText(prev => ({...prev, text: e.target.value}))
     }
 
-    const onSubmit = (e) => {
+    const onSubmitCreate = (e) => {
         e.preventDefault()
         createTodo() 
+    }
+
+    const onSubmitEdit = (e) => {
+        e.preventDefault()
+        console.log('onSubmit edit')
+        return
+        doUpdateTodoText(lastTodoID, todoText.text)
     }
 
     const loadTodos = async () => {
@@ -107,15 +121,15 @@ const HomePage = () => {
     }
 
     const createTodo = async () => {
-        if (!todoInfo.text)
+        if (!todoText.text)
             return
 
-        const resp = await POST_todos__createTodo(todoInfo) 
+        const resp = await POST_todos__createTodo(todoText) 
         if (resp.error) 
             return
 
         set_todos(prev => [resp, ...prev])
-        set_todoInfo(prev => ({...prev, text: ''})) // reset input
+        set_todoText(prev => ({...prev, text: ''})) // reset input
     }
 
     const deleteTodo = async (todo_id) => {
@@ -128,37 +142,52 @@ const HomePage = () => {
 
     // UPDATING TODO
 
-    const doUpdateTodoText_withPrompt = async (todo_id, prevText) => {
-        const resp = await updateTodoText_withPrompt(todo_id, prevText)
+    const doUpdateTodoText = async (todo_id, newText) => {
+        if (!newText) 
+            return
+
+        clearTextInput()
+
+        const resp = await updateTodoText(todo_id, newText)
         if (resp.error) 
             return
 
         _setTodoText(resp.id, resp.text)
     }
 
-    const doUpdateTodoCompleted = async (todo_id, isChecked: boolean) => {
+    const doUpdateTodoCompleted_withFilter = async (todo_id, isChecked: boolean) => {
         const resp = await updateTodoCompleted(todo_id, isChecked)
         if (resp.error) 
             return
         
         const fixedCompletedValue = resp.completed == 'true' || resp.completed == true ? true : false // fix, lebo z api boolean tomu chodi ako string
         _setTodoCompleted(resp.id, fixedCompletedValue)
+
+        if (activeTab == 'all') 
+            return
+        
+        filterTodos(activeTab)
     }
 
-    const doUpdateTodoImportant = async (todo_id, isImportant: boolean) => { 
+    const doUpdateTodoImportant_withFilter = async (todo_id, isImportant: boolean) => { 
         const resp = await updateTodoImportant(todo_id, isImportant)
         if (resp.error) 
             return
         
         const fixedImportantValue = resp.important == 'true' || resp.important == true ? true : false // fix, lebo z api boolean tomu chodi ako string
         _setTodoImportant(resp.id, fixedImportantValue)
+
+        if (activeTab == 'all') 
+            return
+
+        filterTodos(activeTab)
     }
 
     // EFFECTS
 
     useEffect(() => {
         loadTodos()
-    }, [])    
+    }, [])
 
     return (
         <div className={css.homePageContainer}>
@@ -168,11 +197,12 @@ const HomePage = () => {
             <div className={css.todosBox}>
                 <div className={css.header}>
                     <h1>Todo List</h1>
-                    <AddTodoForm
-                        onSubmit={(e) => onSubmit(e)}
+                    <TodoForm
+                        onSubmit={(e) => onSubmitCreate(e)}
                         onChangeText={(e) => onChangeText(e)}
-                        todoInfo={todoInfo}
-                        onAdd={createTodo}
+                        todoText={todoText.text}
+                        onClickButton={createTodo}
+                        btnTitle='Add'
                     />
 
                     <Tabs
@@ -191,9 +221,15 @@ const HomePage = () => {
                                     key={todo.id}
                                     todo={todo}
                                     onDelete={() => deleteTodo(todo.id)}
-                                    onEdit={() => doUpdateTodoText_withPrompt(todo.id, todo.text)}
-                                    onChangeCheckbox={(e) => doUpdateTodoCompleted(todo.id, e.target.checked)}
-                                    onClickImportantIcon={() => doUpdateTodoImportant(todo.id, todo.important ? false : true)}
+                                    onEdit={() => {
+                                        console.log(todo.id);
+                                        
+                                        set_lastTodoID(todo.id)
+                                        set_todoText(prev => ({...prev, text: todo.text}))
+                                        set_isModalOpen(true)
+                                    }}
+                                    onChangeCheckbox={(e) => doUpdateTodoCompleted_withFilter(todo.id, e.target.checked)}
+                                    onClickImportantIcon={() => doUpdateTodoImportant_withFilter(todo.id, todo.important ? false : true)}
                                 />
                             )
                         }
@@ -212,6 +248,23 @@ const HomePage = () => {
                     />
                 }
             </div>
+
+            {isModalOpen &&
+                <TodoForm_modal
+                    onSubmit={(e) => onSubmitEdit(e)}
+                    onChangeText={(e) => onChangeText(e)}
+                    todoText={todoText.text}
+                    onClickButton={() => {
+                        set_isModalOpen(false)
+                        doUpdateTodoText(lastTodoID, todoText.text)
+                    }} 
+                    btnTitle='Edit'
+                    onCancel={() => {
+                        set_isModalOpen(false)
+                        clearTextInput()
+                    }}
+                />
+            }
         </div>
     )
 }
